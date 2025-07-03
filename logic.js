@@ -182,7 +182,12 @@ function showResults() {
     const { taskScore, peopleScore } = calculateScores();
     
     drawGrid(taskScore, peopleScore);
-    showLeadershipType(taskScore, peopleScore);
+    
+    // 점수만 표시
+    document.getElementById('result-type').innerHTML = `
+        <p>과업 중심 점수: ${taskScore.toFixed(1)} / 9.0</p>
+        <p>사람 중심 점수: ${peopleScore.toFixed(1)} / 9.0</p>
+    `;
 }
 
 function drawGrid(taskScore, peopleScore) {
@@ -229,41 +234,27 @@ function drawGrid(taskScore, peopleScore) {
     for (let i = 1; i <= 9; i++) {
         ctx.fillText(i.toString(), 25, 400 - (i * 40 - 20));
     }
+
+    // 리더십 유형 레이블 표시
+    ctx.font = '11px Arial';
+    
+    // 무관심형 (1,1)
+    ctx.fillText('무관심형 리더십 (1,1)', 60, 360);
+    
+    // 과업형 (9,1)
+    ctx.fillText('과업형 리더십 (9,1)', 340, 360);
+    
+    // 컨트리클럽형 (1,9)
+    ctx.fillText('컨트리클럽형 리더십 (1,9)', 60, 40);
+    
+    // 팀 리더십 (9,9)
+    ctx.fillText('팀 리더십 (9,9)', 340, 40);
     
     // 결과 점 그리기
     ctx.beginPath();
     ctx.arc(taskScore * 40 - 20, 400 - (peopleScore * 40 - 20), 5, 0, Math.PI * 2);
     ctx.fillStyle = '#ff0000';
     ctx.fill();
-}
-
-function showLeadershipType(taskScore, peopleScore) {
-    let type = '';
-    let description = '';
-    
-    if (taskScore <= 5 && peopleScore <= 5) {
-        type = '무관심형 리더십 (1,1)';
-        description = '조직의 성과와 구성원들에 대한 관심이 모두 낮은 유형입니다. 리더로서의 책임과 역할을 회피하는 경향이 있습니다.';
-    } else if (taskScore > 5 && peopleScore <= 5) {
-        type = '과업형 리더십 (9,1)';
-        description = '조직의 성과에 대한 관심은 높지만 구성원들에 대한 관심은 낮은 유형입니다. 목표 달성을 최우선으로 생각합니다.';
-    } else if (taskScore <= 5 && peopleScore > 5) {
-        type = '인기형 리더십 (1,9)';
-        description = '구성원들에 대한 관심은 높지만 조직의 성과에 대한 관심은 낮은 유형입니다. 좋은 인간관계를 중시합니다.';
-    } else if (taskScore > 5 && peopleScore > 5) {
-        type = '팀형 리더십 (9,9)';
-        description = '조직의 성과와 구성원들에 대한 관심이 모두 높은 유형입니다. 이상적인 리더십 유형으로 평가됩니다.';
-    } else {
-        type = '중도형 리더십 (5,5)';
-        description = '조직의 성과와 구성원들에 대한 관심이 중간 수준인 유형입니다. 적절한 타협점을 찾으려 노력합니다.';
-    }
-    
-    document.getElementById('result-type').innerHTML = `
-        <h3>${type}</h3>
-        <p>${description}</p>
-        <p>과업 중심 점수: ${taskScore.toFixed(1)} / 9.0</p>
-        <p>사람 중심 점수: ${peopleScore.toFixed(1)} / 9.0</p>
-    `;
 }
 
 function restartSurvey() {
